@@ -2,7 +2,7 @@ package com.lcf.learn.algrithm.sort;
 
 import java.util.Arrays;
 
-public class Sort {
+public class QuickSort {
 
     public static void quickSort(int[] nums) {
         quickSort(nums, 0, nums.length-1);

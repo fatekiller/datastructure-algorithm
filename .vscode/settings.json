@@ -1,0 +1,10 @@
+{
+    "[markdown]": {
+        "editor.quickSuggestions": {
+          "other": true,
+          "comments": false,
+          "strings": true
+        },
+      },
+      "pasteImage.path": "${projectRoot}/markdown-img/${currentFileNameWithoutExt}"
+}
