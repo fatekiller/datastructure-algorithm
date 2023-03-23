@@ -6,6 +6,12 @@ public class BiSearch {
         System.out.println(sqrt(9.0, 0.001));
     }
 
+    /**
+     *
+     * @param value 待开方数
+     * @param error 误差
+     * @return 结果
+     */
     public static double sqrt(double value, double error) {
         double begin = 0.0, end = value;
         double mid = (begin+end)/2;
