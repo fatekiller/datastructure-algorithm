@@ -38,11 +38,15 @@ public class MyLinkedList<T> {
         if (tmp != null) {
             tmp.prev = n;
         }
-
-
     }
 
     // 尾部插入节点
+    public void addTail(T val) {
+        ListNode n = new ListNode(val);
+        n.prev = tail;
+        tail.next = n;
+        tail = n;
+    }
 
     // 删除指定节点
 
