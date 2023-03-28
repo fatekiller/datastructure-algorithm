@@ -2,6 +2,7 @@ package com.lcf.learn.data.stracture.list;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MatrixTravel {
@@ -49,7 +50,7 @@ public class MatrixTravel {
             }
 
             // 写左边
-            for (int i = bottom - 1; i >= top+1; i--) {
+            for (int i = bottom - 1; i >= top + 1; i--) {
                 rst[idx++] = matrix[i][left];
             }
             left++;
@@ -61,13 +62,62 @@ public class MatrixTravel {
     }
 
     /**
-     * 对角线遍历数组
+     * 对角线遍历数组, 沿着对角线从左到右
+     * mat = [[1,2,3],[4,5,6],[7,8,9]]
+     * 输出：[1,2,4,7,5,3,6,8,9]
      */
-    public int[] findDiagonalOrder(int[][] mat) {
-        if(mat.length == 0) return new int[]{};
+    public static int[] findDiagonalOrder(int[][] mat) {
+        if (mat.length == 0) return new int[]{};
         int m = mat.length, n = mat[0].length;
-        return new int[]{};
+        int[] rst = new int[m * n];
+        int idx = 0, sig = 0;
+        int[][] move = new int[][]{
+                {-1, 1}, // 往左上，列加1，行减1
+                {1, -1}
+        };
+        int x = 0, y = 0, nx = 0, ny = 0;
+        while (true) {
+            // System.out.printf("%d,%d\n", x, y);
+            rst[idx++] = mat[x][y];
+            if (idx == m * n) break;
 
+            nx = x + move[sig][0];
+            ny = y + move[sig][1];
+
+            // 如果没越界
+            if (0 <= nx && nx < m && 0 <= ny && ny < n) {
+                x = nx;
+                y = ny;
+                continue;
+            }
+
+            // 如果上下超过了,左右没有超过, y增加1，x不变
+            if ((nx < 0 || nx >= m) && (0 <= ny && ny < n)) {
+                y = y + 1;
+                sig = sig ^ 1;
+                continue;
+            }
+
+            // 如果左右超过了, 上下没有超过, y增加1，x不变
+            if ((ny < 0 || ny >= n) && (0 <= nx && nx < m)) {
+                x = x + 1;
+                sig = sig ^ 1;
+                continue;
+            }
+
+            // 右上顶点
+            if (x == 0 && y == n - 1) {
+                x = 1;
+                sig = sig ^ 1;
+                continue;
+            }
+            // 左下顶点
+            if (x == m - 1 && y == 0) {
+                y = 1;
+                sig = sig ^ 1;
+            }
+        }
+        return rst;
     }
 
     public static void main(String[] args) {
@@ -77,6 +127,9 @@ public class MatrixTravel {
                 {9, 10, 11, 12},
                 {13, 14, 15, 16},
         };
-        System.out.println(Arrays.toString(travelMatrix(data)));
+        // System.out.println(Arrays.toString(travelMatrix(data)));
+        System.out.println(Arrays.toString(findDiagonalOrder(data)));
     }
+
+
 }

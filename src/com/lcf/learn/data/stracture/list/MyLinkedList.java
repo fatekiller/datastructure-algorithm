@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * 一个带头尾指针的双链表
  */
-public class MyLinkedList<T> {
+public class MyLinkedList<T> implements MyList<T> {
 
     private ListNode head;
 
@@ -34,22 +34,7 @@ public class MyLinkedList<T> {
     }
 
 
-    /**
-     * Returns {@code true} if this list contains the specified element.
-     * More formally, returns {@code true} if and only if this list contains
-     * at least one element {@code e} such that
-     * {@code Objects.equals(o, e)}.
-     *
-     * @param o element whose presence in this list is to be tested
-     * @return {@code true} if this list contains the specified element
-     * @throws ClassCastException   if the type of the specified element
-     *                              is incompatible with this list
-     *                              (<a href="Collection.html#optional-restrictions">optional</a>)
-     * @throws NullPointerException if the specified element is null and this
-     *                              list does not permit null elements
-     *                              (<a href="Collection.html#optional-restrictions">optional</a>)
-     */
-    public boolean contains(Object o) {
+    public boolean contains(T o) {
         if (isEmpty()) return false;
         if (o == null) {
             for (ListNode p = head; p != null; p = p.next) {
@@ -68,23 +53,6 @@ public class MyLinkedList<T> {
     }
 
 
-    /**
-     * Returns the index of the first occurrence of the specified element
-     * in this list, or -1 if this list does not contain the element.
-     * More formally, returns the lowest index {@code i} such that
-     * {@code Objects.equals(o, get(i))},
-     * or -1 if there is no such index.
-     *
-     * @param o element to search for
-     * @return the index of the first occurrence of the specified element in
-     * this list, or -1 if this list does not contain the element
-     * @throws ClassCastException   if the type of the specified element
-     *                              is incompatible with this list
-     *                              (<a href="Collection.html#optional-restrictions">optional</a>)
-     * @throws NullPointerException if the specified element is null and this
-     *                              list does not permit null elements
-     *                              (<a href="Collection.html#optional-restrictions">optional</a>)
-     */
     public int indexOf(Object o) {
         int index = 0;
         if (o == null) {
@@ -159,5 +127,53 @@ public class MyLinkedList<T> {
         n.prev = null;
         n.next = null;
         size--;
+    }
+
+    private ListNode node(int idx) {
+        if (idx >= size) throw new RuntimeException(String.format("array index out of bound %d, %d", idx, size));
+        ListNode p = head;
+        for (int i = 0; i < idx; i++) {
+            p = p.next;
+        }
+        return p;
+    }
+
+    public T get(int idx) {
+        return node(idx).val;
+    }
+
+    public void set(int idx, T val) {
+        ListNode n = node(idx);
+        n.val = val;
+    }
+
+    public void insert(int idx, T val) {
+        if (idx == 0) {
+            addHead(val);
+            return;
+        }
+        ListNode n = node(idx);
+        ListNode newNode = new ListNode(val, n.prev, n);
+        n.prev.next = newNode;
+        n.prev = newNode;
+        size++;
+    }
+
+    public void delete(int idx) {
+        ListNode n = node(idx);
+        deleteNode(n);
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+        for (ListNode p = head, pre = head; p != null; pre = p, p = p.next) {
+            if (p != pre) {
+                assert p.prev == pre;
+            }
+            sb.append(p.val);
+            sb.append("-->");
+        }
+        sb.delete(sb.length() - 3, sb.length());
+        return sb.append("]").toString();
     }
 }
